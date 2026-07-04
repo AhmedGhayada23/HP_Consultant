@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "258922235456",
+    "project_id": "hp-consultant",
+    "storage_bucket": "hp-consultant.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258922235456:android:67a64ffa15d32fac9901a5",
+        "android_client_info": {
+          "package_name": "com.hpconsultant.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ0xVueUlAwCdRX1cZc-br_kQXvgPpXwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

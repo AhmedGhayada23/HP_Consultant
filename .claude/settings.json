@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(flutter analyze lib/featuer/user_home/company_home/presentation/company_home_view.dart lib/core/data/models/dashboard_campany_model.dart)"
+    ]
+  }
+}
