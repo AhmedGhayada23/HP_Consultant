@@ -10,12 +10,13 @@ import 'package:hb/core/styles/app_color.dart';
 import 'package:hb/core/styles/app_font.dart';
 import 'package:hb/core/styles/app_photo.dart';
 import 'package:hb/core/widgets/custom_button.dart';
+import 'package:hb/core/widgets/custom_button_border.dart';
 import 'package:hb/core/widgets/dashed_line.dart';
 import 'package:hb/core/widgets/empty_state_widget.dart';
 import 'package:hb/core/widgets/info_row.dart';
-import 'package:hb/featuer/file_web_view/file_web_view.dart';
 import 'package:hb/l10n/app_localizations.dart';
 import 'package:hb/utils/dialogs_utils.dart';
+import 'package:hb/utils/universal_downloader.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
@@ -41,22 +42,39 @@ class _DetailsHbLabProjectAccountingState
     );
   }
 
-  // فتح/معاينة الملف داخل عارض الملفات (بدون تحميل)
-  void _viewFile(BuildContext context, String url, String name) {
-    if (url.isEmpty) {
+  // تنزيل الملف (بناءً على download_url) ثم فتحه بعارض الجهاز — نفس فنكشن السيرة الذاتية
+  Future<void> _downloadFile(BuildContext context, String url) async {
+    if (url.isEmpty) return;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+    try {
+      final status = await UniversalDownloader().downloadAndOpen(url: url);
+      if (!context.mounted) return;
+      Navigator.pop(context); // إغلاق مؤشّر التحميل
+      final loc = AppLocalizations.of(context)!;
+      switch (status) {
+        case DownloadOpenStatus.downloadFailed:
+          showCustomSnackBar(context, loc.download_failed, SnackBarType.error);
+          break;
+        case DownloadOpenStatus.downloadedNotOpened:
+          showCustomSnackBar(
+              context, loc.downloaded_no_viewer, SnackBarType.warning);
+          break;
+        case DownloadOpenStatus.opened:
+          break; // فُتح بنجاح
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      Navigator.pop(context);
       showCustomSnackBar(
         context,
-        AppLocalizations.of(context)!.no_file_available,
+        e.toString().replaceFirst('Exception: ', ''),
         SnackBarType.error,
       );
-      return;
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => FileWebViewPage(fileName: name, fileUrl: url),
-      ),
-    );
   }
 
   @override
@@ -257,45 +275,49 @@ class _DetailsHbLabProjectAccountingState
                               color: AppColor.gray1,
                               borderRadius: BorderRadius.circular(16.r),
                             ),
-                            // الضغط على الملف يفتح معاينته بدل تحميله
-                            child: ListTile(
-                              minLeadingWidth: 0,
-                              minTileHeight: 0,
-                              minVerticalPadding: 0,
-                              contentPadding: EdgeInsets.zero,
-                              onTap: () => _viewFile(
-                                context,
-                                f.downloadUrl ?? f.url ?? '',
-                                f.fileName ?? '',
-                              ),
-                              leading: Container(
-                                width: 39.w,
-                                height: 43.h,
-                                decoration: BoxDecoration(
-                                  color: AppColor.k1primeryColor.withValues(
-                                    alpha: 0.15,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  minLeadingWidth: 0,
+                                  minTileHeight: 0,
+                                  minVerticalPadding: 0,
+                                  contentPadding: EdgeInsets.zero,
+                                  leading: Container(
+                                    width: 39.w,
+                                    height: 43.h,
+                                    decoration: BoxDecoration(
+                                      color: AppColor.k1primeryColor.withValues(
+                                        alpha: 0.15,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: Center(
+                                      child: VectorGraphic(
+                                        loader:
+                                            AssetBytesLoader(AppSvg.fileSvg),
+                                      ),
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                child: Center(
-                                  child: VectorGraphic(
-                                    loader: AssetBytesLoader(AppSvg.fileSvg),
+                                  title: Text(
+                                    f.fileName ?? '',
+                                    style: MyTextStyle().textStyleRegular14(),
+                                  ),
+                                  subtitle: Text(
+                                    f.uploaderDisplay ?? f.typeLabel ?? '',
+                                    style: MyTextStyle().textStyleRegular11(),
                                   ),
                                 ),
-                              ),
-                              title: Text(
-                                f.fileName ?? '',
-                                style: MyTextStyle().textStyleRegular14(),
-                              ),
-                              subtitle: Text(
-                                f.uploaderDisplay ?? f.typeLabel ?? '',
-                                style: MyTextStyle().textStyleRegular11(),
-                              ),
-                              trailing: Icon(
-                                Icons.visibility_outlined,
-                                color: AppColor.k1primeryColor,
-                                size: 22.r,
-                              ),
+                                SizedBox(height: 12.h),
+                                // تنزيل بناءً على download_url (نفس فنكشن السيرة الذاتية)
+                                CustomButtonBorder(
+                                  onTap: () => _downloadFile(
+                                    context,
+                                    f.downloadUrl ?? f.url ?? '',
+                                  ),
+                                  borderColor: AppColor.k1primeryColor,
+                                  text: loc.download,
+                                ),
+                              ],
                             ),
                           ),
                         ),

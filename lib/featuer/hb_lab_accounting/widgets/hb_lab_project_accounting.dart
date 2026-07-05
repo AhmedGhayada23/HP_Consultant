@@ -6,13 +6,11 @@ import 'package:hb/core/cubit/hb_lab_project_accounting_cubit/hb_lab_project_acc
 import 'package:hb/core/data/models/hb_lab_project_model.dart';
 import 'package:hb/core/styles/app_color.dart';
 import 'package:hb/core/styles/app_font.dart';
-import 'package:hb/core/widgets/custom_button.dart';
 import 'package:hb/core/widgets/custom_button_border.dart';
 import 'package:hb/core/widgets/dashed_line.dart';
 import 'package:hb/core/widgets/empty_state_widget.dart';
 import 'package:hb/core/widgets/info_row.dart';
 import 'package:hb/featuer/hb_lab_accounting/presentation/details_hb_lab_project_accounting.dart';
-import 'package:hb/featuer/hb_lab_accounting/presentation/reevaluate_project_accounting_view.dart';
 import 'package:hb/l10n/app_localizations.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -86,37 +84,16 @@ class HbLabProjectAccounting extends StatelessWidget {
                           InfoRow(label: '${loc.budget}: ', value: item.budget!),
                         ],
                         SizedBox(height: 20.h),
-                        Row(
-                          children: [
-                            if (item.statusRaw != 'open')
-                              Expanded(
-                                child: CustomButton(
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            ReevaluateProjectAccountingView()),
-                                  ),
-                                  color: AppColor.k1primeryColor,
-                                  text: loc.reevaluate_project,
-                                ),
-                              ),
-                            if (item.statusRaw != 'open') SizedBox(width: 8.w),
-                            Expanded(
-                              child: CustomButtonBorder(
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) =>
-                                        DetailsHbLabProjectAccounting(
-                                            hbLabProjectModel: item),
-                                  ),
-                                ),
-                                borderColor: AppColor.k1primeryColor,
-                                text: loc.view_details,
-                              ),
+                        CustomButtonBorder(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => DetailsHbLabProjectAccounting(
+                                  hbLabProjectModel: item),
                             ),
-                          ],
+                          ),
+                          borderColor: AppColor.k1primeryColor,
+                          text: loc.view_details,
                         ),
                       ],
                     ),
