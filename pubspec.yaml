@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+2
+version: 1.0.0+4
 
 environment:
   sdk: ^3.8.1
@@ -92,18 +92,13 @@ flutter_native_splash:
   android: true
   ios: true
   web: true
-  # صورة سبلاش بكامل الشاشة (خلفيتها بيضاء)
-  background_image: assets/images/splach.png
-  android_gravity: fill
-  # aspectFill يغطّي الشاشة كاملة فيمنع الأشرطة/الشاشة السودة على iOS
-  ios_content_mode: scaleAspectFill
-  web_image_mode: cover
-  fullscreen: true
+  # لوجو في المنتصف على خلفية بلون واحد (بدون صورة كاملة الشاشة)
+  color: "#FFFFFF"
+  image: assets/images/logo.png
 
-  # أندرويد 12+ لا يدعم صورة كاملة — يعرض أيقونة وسطية على خلفية لون
+  # أندرويد 12+ : نفس اللوجو على نفس لون الخلفية
   android_12:
-    image: assets/icons/app_icon_foreground.png
-    icon_background_color: "#FFFFFF"
+    image: assets/images/logo.png
     color: "#FFFFFF"
 
   # The "flutter_lints" package below contains a set of recommended lints to

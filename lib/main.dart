@@ -96,6 +96,8 @@ import 'package:hb/core/cubit/update_project_cubit/update_project_cubit.dart';
 import 'package:hb/core/cubit/upload_file_cubit/upload_file_cubit.dart';
 import 'package:hb/core/cubit/user_cubit/user_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hb/firebase_options.dart';
+import 'dart:developer' as dev;
 import 'package:hb/core/navigation/app_navigator.dart';
 import 'package:hb/core/routes/my_routes.dart';
 import 'package:hb/utils/fb_notifications.dart';
@@ -107,8 +109,16 @@ void main() async {
   await LocalStorage().initStorage();
 
   // ── Firebase ──────────────────────────────────────────────────────────────
-  await Firebase.initializeApp();
-  await FbNotifications.initNotifications();
+  // نمرّر إعدادات المنصّة من firebase_options.dart حتى يعمل iOS دون الحاجة إلى
+  // GoogleService-Info.plist. نحيط بها بحماية حتى لا يبقى iOS بشاشة سوداء لو فشلت.
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await FbNotifications.initNotifications();
+  } catch (e) {
+    dev.log('Firebase init failed: $e');
+  }
   // ─────────────────────────────────────────────────────────────────────────
   // ✅ تبدأ دائماً من شاشة البداية (Splash) وهي تقرّر الوجهة حسب حالة الدخول
   runApp(
