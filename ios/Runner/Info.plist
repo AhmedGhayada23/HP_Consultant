@@ -49,5 +49,13 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSCameraUsageDescription</key>
+		<string>HB Consultant needs access to your camera so you can take a profile photo or capture documents to attach to your requests.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>HB Consultant needs access to your photo library so you can choose a profile picture and attach images or documents to your requests.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>HB Consultant needs permission to save downloaded files and images (such as certificates and CVs) to your photo library.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>HB Consultant uses your location only to improve service-related features while you use the app.</string>
 	</dict>
 </plist>
