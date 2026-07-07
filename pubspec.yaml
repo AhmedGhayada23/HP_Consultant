@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+4
+version: 1.0.0+5
 
 environment:
   sdk: ^3.8.1
@@ -78,28 +78,35 @@ flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/icons/app_icon.png"
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/icons/app_icon_foreground.png"
+  image_path: "assets/icons/ic_launcher.png"
+  adaptive_icon_background: "#000C21"
+  adaptive_icon_foreground: "assets/icons/ic_launcher.png"
   web:
     generate: true
-    image_path: "assets/icons/app_icon.png"
+    image_path: "assets/icons/ic_launcher.png"
   windows:
     generate: true
-    image_path: "assets/icons/app_icon.png"
+    image_path: "assets/icons/ic_launcher.png"
 
 flutter_native_splash:
   android: true
   ios: true
   web: true
-  # لوجو في المنتصف على خلفية بلون واحد (بدون صورة كاملة الشاشة)
-  color: "#FFFFFF"
-  image: assets/images/logo.png
 
-  # أندرويد 12+ : نفس اللوجو على نفس لون الخلفية
+  # لوجو في المنتصف على خلفية بلون التطبيق (بدون صورة كاملة الشاشة)
+  color: "#000C21"
+  image: assets/icons/app_logo.png
+
+  color_dark: "#000C21"
+  image_dark: assets/icons/app_logo.png
+
+  # أندرويد 12+ : نفس اللوجو على نفس ألوان التطبيق
   android_12:
-    image: assets/images/logo.png
-    color: "#FFFFFF"
+    color: "#000C21"
+    image: assets/icons/app_logo.png
+
+    color_dark: "#000C21"
+    image_dark: assets/icons/app_logo.png
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -121,6 +128,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/icons/
     - assets/svg/
 
   # An image asset can refer to one or more resolution-specific "variants", see

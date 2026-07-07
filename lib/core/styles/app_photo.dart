@@ -1,6 +1,6 @@
 class AppImage {
   static const String _baseImagePath = 'assets/images/';
-  static const String logoImage = '${_baseImagePath}logo.png';
+  static const String logoImage = 'assets/icons/app_logo.png';
   static const String logoAuthImage = '${_baseImagePath}logo_auth.png';
 }
 

@@ -17,7 +17,8 @@ import 'package:hb/featuer/chat_support/presentation/chat_message_view.dart';
 const String _channelId = 'hb_channel';
 const String _channelName = 'HB Notifications';
 const String _channelDesc = 'HB Consulting notifications channel';
-const String _androidIcon = '@mipmap/ic_launcher';
+const String _androidIcon = '@drawable/ic_notification';
+const Color _androidIconColor = Color(0xFF84BD47);
 
 final FlutterLocalNotificationsPlugin _localNotifications =
     FlutterLocalNotificationsPlugin();
@@ -140,6 +141,7 @@ class FbNotifications {
               importance: Importance.high,
               priority: Priority.high,
               icon: _androidIcon,
+              color: _androidIconColor,
             ),
             iOS: DarwinNotificationDetails(),
           ),

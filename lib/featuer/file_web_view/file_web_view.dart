@@ -18,8 +18,9 @@ class FileWebViewPage extends StatefulWidget {
 }
 
 class _FileWebViewPageState extends State<FileWebViewPage> {
-  late final WebViewController controller;
+  WebViewController? controller;
   bool isLoading = true;
+  String? loadError;
 
   // WebView على أندرويد لا يعرض PDF/مستندات Office مباشرة،
   // لذلك نغلّفها بعارض Google Docs ليتم عرضها داخل الصفحة.
@@ -49,6 +50,17 @@ class _FileWebViewPageState extends State<FileWebViewPage> {
   @override
   void initState() {
     super.initState();
+
+    final resolvedUrl = _resolveViewUrl(widget.fileUrl);
+    final uri = Uri.tryParse(resolvedUrl);
+    // تأكد أن الرابط صالح ويحتوي على http/https قبل تحميله،
+    // وإلا سيرمي loadRequest استثناء "Missing scheme in uri".
+    if (uri == null || !uri.hasScheme || !uri.isAbsolute) {
+      loadError = 'Invalid or missing file link.';
+      isLoading = false;
+      return;
+    }
+
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -71,7 +83,7 @@ class _FileWebViewPageState extends State<FileWebViewPage> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(_resolveViewUrl(widget.fileUrl)));
+      ..loadRequest(uri);
   }
 
   @override
@@ -92,7 +104,18 @@ class _FileWebViewPageState extends State<FileWebViewPage> {
             ),
         ],
       ),
-      body: WebViewWidget(controller: controller),
+      body: loadError != null || controller == null
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text(
+                  loadError ?? 'Invalid or missing file link.',
+                  textAlign: TextAlign.center,
+                  style: MyTextStyle().textStyleSemiBold16(),
+                ),
+              ),
+            )
+          : WebViewWidget(controller: controller!),
     );
   }
 }

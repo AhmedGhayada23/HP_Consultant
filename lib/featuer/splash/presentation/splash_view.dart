@@ -20,10 +20,14 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
     vsync: this,
     duration: const Duration(milliseconds: 1000),
   )..forward();
-  late final Animation<double> _fade =
-      CurvedAnimation(parent: _entrance, curve: Curves.easeOut);
-  late final Animation<double> _scale = Tween<double>(begin: 0.85, end: 1.0)
-      .animate(CurvedAnimation(parent: _entrance, curve: Curves.easeOutBack));
+  late final Animation<double> _fade = CurvedAnimation(
+    parent: _entrance,
+    curve: Curves.easeOut,
+  );
+  late final Animation<double> _scale = Tween<double>(
+    begin: 0.85,
+    end: 1.0,
+  ).animate(CurvedAnimation(parent: _entrance, curve: Curves.easeOutBack));
 
   // حلقات النبض + شريط التقدّم
   late final AnimationController _pulse = AnimationController(
@@ -65,7 +69,7 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [AppColor.whiteColor, Color(0xffF2F7EA)],
+            colors: [Color(0xff000C21), Color(0xff162A45)],
           ),
         ),
         child: Stack(
@@ -108,13 +112,15 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
                       child: Container(
                         width: 140.r,
                         height: 140.r,
-                        padding: EdgeInsets.all(18.r),
+                        padding: EdgeInsets.all(24.r),
                         decoration: BoxDecoration(
-                          color: AppColor.whiteColor,
+                          color: Color(0xff08162F),
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: AppColor.blackColor.withValues(alpha: 0.08),
+                              color: AppColor.blackColor.withValues(
+                                alpha: 0.08,
+                              ),
                               blurRadius: 24,
                               offset: const Offset(0, 10),
                             ),
